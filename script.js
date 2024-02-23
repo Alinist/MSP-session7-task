@@ -36,7 +36,7 @@ button.addEventListener("click", function (form) {
         dayError.innerHTML = "This field is required";
         dayVerfication = false;
     }
-    else if (dayInput.value < 1 || dayInput.value > 31) {
+    else if ((dayInput.value < 1 || dayInput.value > 31) || ((dayInput.value == 1 || dayInput.value == 3 || dayInput == 5 || dayInput == 7 || dayInput == 8 || dayInput == 10 || dayInput == 12) && monthInput.value == 31) || (dayInput.value > 28 && monthInput.value == 4)) {
         dayError.innerHTML = "Must be a vaild day";
         dayVerfication = false;
     }
