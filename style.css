@@ -1,0 +1,186 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #eeeeee;
+}
+
+.attribution {
+    margin-top: 20px;
+    font-size: 18px;
+    text-align: center;
+}
+
+.attribution a {
+    color: hsl(228, 45%, 44%);
+}
+
+.App {
+    background-color: white;
+    padding: 50px;
+    margin-top: 200px;
+    width: 800px;
+    border-radius: 30px 30px 200px 30px;
+}
+
+.App .inputs {
+    display: flex;
+    column-gap: 30px;
+}
+
+.App .inputs div {
+    display: flex;
+    flex-direction: column;
+}
+
+.App .inputs div label {
+    margin-bottom: 10px;
+    letter-spacing: 5px;
+    font-weight: bold;
+    color: rgb(115, 115, 115);
+    transition: color 0.2s;
+    cursor: pointer;
+}
+
+.App .inputs div input {
+    width: 160px;
+    height: 80px;
+    padding: 30px;
+    font-size: 28px;
+    font-weight: bold;
+    border-radius: 12px;
+    border: solid 1px rgb(200, 199, 199);
+}
+
+.App .inputs div input.input-box,
+textarea {
+    background: transparent;
+}
+
+.App .inputs div p {
+    color: red;
+    font-size: 14px;
+    text-align: center;
+    width: 100%;
+    margin-top: 10px;
+    font-style: italic;
+}
+
+.App .inputs div input:focus {
+    border: solid 1px blueviolet;
+    outline: none;
+    caret-color: blueviolet;
+}
+
+input::selection {
+    color: blueviolet;
+    background-color: black;
+}
+
+.App .button {
+    margin-top: 20px;
+    position: relative;
+}
+
+.App .button hr {
+    margin-top: 10px;
+    border: solid 1px rgb(239, 239, 239);
+}
+
+.App .button img {
+    padding: 25px;
+    width: 100px;
+    border-radius: 50%;
+    background-color: blueviolet;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.App .button img:hover {
+    background-color: black;
+}
+
+.App #output {
+    font-size: 80px;
+    font-weight: 900;
+    font-style: italic;
+}
+
+.App #output p span {
+    color: blueviolet;
+    margin-right: 8px;
+}
+
+@media (min-width : 375px) and (max-width : 1440px) {
+    .App {
+        width: 90%;
+        padding: 30px;
+        padding-top: 50px;
+    }
+
+    .App .inputs {
+        display: flex;
+        column-gap: 20px;
+        justify-content: center;
+    }
+
+    .App .inputs div input {
+        margin: 0;
+        padding: 15px;
+        width: 80px;
+        height: 50px;
+        font-size: 16px;
+    }
+
+    .App .inputs div p {
+        width: 90px;
+    }
+
+    .App .inputs div label {
+        font-size: 12px;
+    }
+
+    .App .button {
+        margin-top: 40px;
+    }
+
+    .App .button img {
+        padding: 12px;
+        width: 50px;
+        border-radius: 50%;
+        background-color: blueviolet;
+        position: absolute;
+        right: 50%;
+        top: 50%;
+        transform: translate(50%, -50%);
+        cursor: pointer;
+    }
+
+    .App #output {
+        margin-top: 40px;
+        font-size: 40px;
+        font-weight: 900;
+        font-style: italic;
+    }
+}
+
+@media (min-width : 500px) and (max-width : 1440px) {
+    .App {
+        width: 500px;
+        padding: 30px;
+        padding-top: 50px;
+    }
+}
