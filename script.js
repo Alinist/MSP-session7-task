@@ -28,15 +28,18 @@ if (localStorage.getItem("ageYears") != null) {
 
 
 button.addEventListener("click", function (form) {
+
     form.preventDefault();
+
     let dayVerfication = true;
     let monthVerification = true;
     let yearVerification = true;
+
     if (dayInput.value == "") {
         dayError.innerHTML = "This field is required";
         dayVerfication = false;
     }
-    else if ((dayInput.value < 1 || dayInput.value > 31) || ((dayInput.value == 1 || dayInput.value == 3 || dayInput == 5 || dayInput == 7 || dayInput == 8 || dayInput == 10 || dayInput == 12) && monthInput.value == 31) || (dayInput.value > 28 && monthInput.value == 4)) {
+    else if ((dayInput.value < 1 || dayInput.value > 31) || ((monthInput.value == 4 || monthInput.value == 6 || monthInput.value == 9 || monthInput.value == 11) && dayInput.value > 30) || (dayInput.value > 28 && monthInput.value == 2 && yearInput.value % 4 != 0) || (dayInput.value > 29 && monthInput.value == 2 && yearInput.value % 4 == 0)) {
         dayError.innerHTML = "Must be a vaild day";
         dayVerfication = false;
     }
@@ -63,7 +66,7 @@ button.addEventListener("click", function (form) {
             monthError.innerHTML = "Must be in the past";
             monthVerification = false;
         } else {
-            if (dayInput.value > time.getDate()) {
+            if (dayInput.value > time.getDate() && monthInput.value == time.getMonth() + 1) {
                 dayVerfication = false;
                 dayError.innerHTML = "Must be in the past";
             }
@@ -71,13 +74,16 @@ button.addEventListener("click", function (form) {
     }
 
     invokeError(dayVerfication, monthVerification, yearVerification);
+
     if (dayVerfication && monthVerification && yearVerification) {
         getAge();
         saveDate();
     }
+
 })
 
 function invokeError(dayVerfication, monthVerification, yearVerification) {
+
     if (!dayVerfication) {
         dayInput.style.borderColor = "hsl(0, 100%, 67%)";
         dayText.style.color = "hsl(0, 100%, 67%)";
@@ -102,56 +108,45 @@ function invokeError(dayVerfication, monthVerification, yearVerification) {
         yearText.style.color = "rgb(115, 115, 115)";
         yearError.innerHTML = "";
     }
+
 }
 
 function getAge() {
+
     const inputDate = new Date(yearInput.value, monthInput.value - 1, dayInput.value);
-    years = (time.getTime() - inputDate.getTime()) / 1000 / 60 / 60 / 24 / 365;
-    months = (years - Math.floor(years)) * 12;
-    if (time.getDate() < inputDate.getDate()) {
-        months--;
-        days = 30 - Math.abs(time.getDate() - inputDate.getDate());
-        if (time.getMonth() == inputDate.getMonth()) {
-            months = 12 - Math.abs(time.getMonth() - inputDate.getMonth()) - 1;
-            years--;
-        }
-    } else {
-        days = time.getDate() - inputDate.getDate();
+    years = time.getFullYear() - inputDate.getFullYear();
+    months = time.getMonth() - inputDate.getMonth();
+    days = time.getDate() - inputDate.getDate();
+
+    if (months < 0) {
+        years--;
+        months += 12;
     }
 
-    // if (time.getMonth() < inputDate.getMonth()) {
-    //     months = 12 - Math.abs(time.getMonth() - inputDate.getMonth());
-    //     months--;
-    // } else if (time.getMonth() > inputDate.getMonth()) {
-    //     if (time.getDate() < inputDate.getDate())
-    //         months = Math.abs(time.getMonth() - inputDate.getMonth()) - 1;
-    // }
-    // years = Math.floor(years);
-    // months = Math.floor(months);
-    // days = Math.floor(days);
-
-    ageDays.innerHTML = 0;
-    ageMonths.innerHTML = 0;
-    ageYears.innerHTML = 0;
-
-    let timer = 0;
-    setInterval(function () {
-        timer++;
-        if (timer <= years) {
-            ageYears.innerHTML = timer;
+    if (days < 0) {
+        months--;
+        if (months < 0) {
+            years--;
+            months += 12;
+        }
+        if (months == 5 || months == 7 || months == 10 || months == 12) {
+            days += 30;
+        } else if (months == 3) {
+            if (years % 4 == 0)
+                days += 29;
+            else
+                days += 28;
         } else {
-            clearInterval();
+            days += 29;
         }
-        if (timer <= months) {
-            ageMonths.innerHTML = timer;
-        }
-        if (timer <= days) {
-            ageDays.innerHTML = timer;
-        }
-    }, 80)
+    }
+
+    countUpTimer(days, months, years);
+
 }
 
 function saveDate() {
+
     localStorage.setItem("ageYears", years);
     localStorage.setItem("ageMonths", months);
     localStorage.setItem("ageDays", days);
@@ -159,34 +154,42 @@ function saveDate() {
     localStorage.setItem("inputYears", yearInput.value);
     localStorage.setItem("inputMonths", monthInput.value);
     localStorage.setItem("inputDays", dayInput.value);
+
 }
 
 function getData() {
+
     yearInput.value = localStorage.getItem("inputYears");
     monthInput.value = localStorage.getItem("inputMonths");
     dayInput.value = localStorage.getItem("inputDays");
     years = localStorage.getItem("ageYears");
     months = localStorage.getItem("ageMonths");
     days = localStorage.getItem("ageDays");
+    countUpTimer(days, months, years);
 
-    ageDays.innerHTML = 0;
-    ageMonths.innerHTML = 0;
-    ageYears.innerHTML = 0;
+}
 
+function countUpTimer(Days, Months, Years) {
+
+    ageDays.innerHTML = "00";
+    ageMonths.innerHTML = "00";
+    ageYears.innerHTML = "00";
 
     let timer = 0;
+
     setInterval(function () {
         timer++;
-        if (timer <= years) {
-            ageYears.innerHTML = timer;
+        if (timer <= Years) {
+            ageYears.innerHTML = timer.toString().padStart(2, "0");
         } else {
             clearInterval();
         }
-        if (timer <= months) {
-            ageMonths.innerHTML = timer;
+        if (timer <= Months) {
+            ageMonths.innerHTML = timer.toString().padStart(2, "0");;
         }
-        if (timer <= days) {
-            ageDays.innerHTML = timer;
+        if (timer <= Days) {
+            ageDays.innerHTML = timer.toString().padStart(2, "0");;
         }
-    }, 80)
+    }, 60)
+
 }
